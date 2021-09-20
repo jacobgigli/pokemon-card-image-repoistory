@@ -56,7 +56,7 @@ router.post('/', verify, upload.single('productImage'), async(req,res, next) => 
 });
 
 router.get('/:pokemoncardId', verify, async(req,res, next) => {
-   const id = mongoose.Types.ObjectId(mongoose.Types.ObjectId(req.params.pokemoncardId));
+   const id = req.params.pokemoncardId;
     PokemonCard.findById(id).select('-__v').exec().then(doc =>{
         console.log(doc);
         if (doc){
@@ -196,48 +196,81 @@ router.get('/getusercards/:userId', verify, async(req,res, next) => {
  });
 
  router.delete('/:pokemoncardId', verify, async(req,res, next) => {
-    const id = mongoose.Types.ObjectId(mongoose.Types.ObjectId(req.params.pokemoncardId));
-     PokemonCard.remove({_id: id }).exec().then(result =>{
-         res.status(200).json(result);
-         
-         
-     })
-     .catch(err =>{
-         console.log(err);
-         res.status(500).json({error: err});
-     });
+    const id = req.params.pokemoncardId;
+    PokemonCard.findById(id, function (err, docs){
+        if (err){
+            console.log(err);
+        }
+        else{
+            if (req.user._id === docs.user){
+                PokemonCard.remove({_id: id }).exec().then(result =>{
+                    res.status(200).json(result);
+                    
+                    
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({error: err});
+                });
+        
+            }
+
+            else{
+                res.status(403).json({message: 'Access forbidden'})
+            }
+        }
+    })
+    
+   
+    
  });
  
  
  router.patch('/:pokemoncardId', verify, async(req,res, next) => {
-    const id = mongoose.Types.ObjectId(mongoose.Types.ObjectId(req.params.pokemoncardId));
-     await PokemonCard.findByIdAndUpdate(id, {$set: req.body}, {new: true}).exec().then(result =>{
-         res.status(200).json({
-            result: {
-                    name: result.name,
-                    price: result.price,
-                    productImage: result.productImage,
-                    user: result.user,
-                    description: result.description,
-                    dateAcquired: result.dateAcquired,
-                    _id: result._id,
-                    request :{
-                        type: 'GET',
-                        url: 'http://localhost:3000/api/pokemoncards/' + result._id
+    const id = req.params.pokemoncardId;
+
+    PokemonCard.findById(id, async function (err, docs){
+        if (err){
+            console.log(err);
+        }
+
+        else{
+            
+        }
+        if (req.user._id == docs.user){
+            await PokemonCard.findByIdAndUpdate(id, {$set: req.body}, {new: true}).exec().then(result =>{
+                res.status(200).json({
+                   result: {
+                           name: result.name,
+                           price: result.price,
+                           productImage: result.productImage,
+                           user: result.user,
+                           description: result.description,
+                           dateAcquired: result.dateAcquired,
+                           _id: result._id,
+                           request :{
+                               type: 'GET',
+                               url: 'http://localhost:3000/api/pokemoncards/' + result._id
+                           
+                    }
+                   }
                     
-             }
-            }
-             
-         });
-         
-         
-     })
-     .catch(err =>{
-         console.log(err);
-         res.status(500).json({error: err});
-     });
+                });
+                
+                
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({error: err});
+            });
+        }
+
+        else{
+            res.status(403).json({message: 'Access forbidden'})
+        }
  
  });
+});
  
  
  
