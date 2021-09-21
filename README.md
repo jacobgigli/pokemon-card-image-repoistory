@@ -16,8 +16,6 @@ once the image is uploaded, the image can be accessed by using the file path pro
 
 An example would be http://localhost:3000/uploads//1632075198556fearow._AC_.jpg
 
-the images labeled example1 and example2 show the routes in action.
-
 Users can register an account and login to begin selling their pokemon cards, where they must provide an image of the card, its name, and a price.
 To start the program, run the command npm install then npm start
 The routes are as follows:
@@ -68,5 +66,5 @@ Patch route that modifies a pokemon card. Requires its specific object id to edi
 
 Here are some images of the routes in action:
 
-![Creating a pokemon card](pictures/example1.png)
-![Getting a pokemon card using the object id](pictures/example2.png)
+![Creating a pokemon card](./pictures/example1.png)
+![Getting a pokemon card using the object id](./pictures/example2.png)
