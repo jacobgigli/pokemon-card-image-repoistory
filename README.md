@@ -66,5 +66,5 @@ Patch route that modifies a pokemon card. Requires its specific object id to edi
 
 Here are some images of the routes in action:
 
-![Creating a pokemon card](./pictures/example1.png)
-![Getting a pokemon card using the object id](./pictures/example2.png)
+![Creating a pokemon card](pictures/example1.PNG)
+![Getting a pokemon card using the object id](pictures/example2.PNG)
