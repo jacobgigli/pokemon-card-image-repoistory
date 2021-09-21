@@ -12,6 +12,17 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + file.originalname);
   },
 });
+  const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+      cb(null, true);
+    }
+    else {
+      cb(new Error('Invalid file type'), false)
+    }
+    
+  }
+  
 const upload = multer({ storage: storage });
 
 /*
@@ -137,7 +148,7 @@ in the body. 1 for sorting in decending order, and -1 for sorting in ascending o
 router.get("/sortbyfield/:field", verify, async (req, res, next) => {
   // check if valid sorting paramater
   if (Math.abs(req.body.order) != 1) {
-    res.status(400).json({ message: "Invalid sorting paramater" });
+    res.status(400).json({ message: "Sorting order not specified" });
   }
   await PokemonCard.find()
     .sort([[req.params.field, req.body.order]])
@@ -167,7 +178,7 @@ router.get("/sortbyfield/:field", verify, async (req, res, next) => {
       } else {
         res
           .status(404)
-          .json({ message: "No cards found for provided pokemon name" });
+          .json({ message: "Invalid sorting order" });
       }
     })
     .catch((err) => {
@@ -210,7 +221,7 @@ router.get("/getusercards/:userId", verify, async (req, res, next) => {
       if (doc.length != 0) {
         res.status(200).json(response);
       } else {
-        res.status(500).json({ message: "No entry found for provided user" });
+        res.status(404).json({ message: "No entry found for provided user" });
       }
     })
     .catch((err) => {
@@ -232,6 +243,8 @@ router.delete("/:pokemoncardId", verify, async (req, res, next) => {
     if (err) {
       res.status(404).json({ error: err });
     } else {
+
+      // make sure user is authorized to delete this card
       if (req.user._id === doc.user) {
         await PokemonCard.remove({ _id: id })
           .exec()
@@ -261,6 +274,7 @@ router.patch("/:pokemoncardId", verify, async (req, res, next) => {
     if (err) {
       res.status(404).json({ error: err });
     } else {
+      // make sure user is authorized to modify this card
       if (req.user._id == doc.user) {
         await PokemonCard.findByIdAndUpdate(
           id,
