@@ -6,7 +6,7 @@ const pokemonCardSchema = new mongoose.Schema({
   productImage: { type: String, required: true },
   user: { type: String, required: true },
   description: { type: String, required: true },
-  dateAcquired: { type: Date, required: true },
+  dateAcquired: { type: Date, required: true, default: Date.now },
 });
 
 module.exports = mongoose.model("PokemonCard", pokemonCardSchema);

@@ -10,11 +10,11 @@ dotenv.config();
 app.use("/uploads", express.static("uploads"));
 //Import Routes
 
+
 //Connect to db
 
-mongoose.connect(
-  "mongodb+srv://user:userpassword@cluster0.gnde5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  () => console.log("connected to db")
+mongoose.connect("" + process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
+  console.log("connected to db")
 );
 
 mongoose.Promise = global.Promise;
@@ -25,3 +25,4 @@ app.use(express.json());
 app.use("/api/user", authRoute);
 app.use("/api/pokemoncards", pokemoncardsRoute);
 app.listen(3000, () => console.log("Server Up and running"));
+module.exports = app;

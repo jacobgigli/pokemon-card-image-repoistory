@@ -10,6 +10,12 @@ const schema = Joi.object({
   email: Joi.string().min(6).required().email(),
   password: Joi.string().min(6).required(),
 });
+
+
+
+/*
+Route that allows a user to register. Requires a name, email and password.
+*/
 router.post("/register", async (req, res) => {
   // validate data
   const { error } = registerValidation(req.body);
@@ -35,7 +41,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-//Login
+/*
+Route that allows a user to login. Requires a email and a password. Sends back the user's auth-token
+*/
 router.post("/login", async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
