@@ -250,12 +250,17 @@ router.delete("/:pokemoncardId", verify, async (req, res, next) => {
           .exec()
           .then((result) => {
             res.status(200).json(result);
+            Promise.resolve()
           })
           .catch((err) => {
             console.log(err);
             res.status(404).json({ error: err });
+            Promise.resolve()
           });
-      } else {
+      } 
+      
+      
+      else {
         res.status(403).json({ message: "Access forbidden" });
       }
     }
@@ -297,11 +302,14 @@ router.patch("/:pokemoncardId", verify, async (req, res, next) => {
                   url: "http://localhost:3000/api/pokemoncards/" + result._id,
                 },
               },
+              
             });
+            Promise.resolve();
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err)
             res.status(404).json({ error: err });
+            Promise.resolve();
           });
       } else {
         res.status(403).json({ message: "Access forbidden" });
