@@ -1,4 +1,4 @@
-# shopifyProject
+# Pokemon Card Image Repository
 My project represents the backend of a site where users can sell their Pokemon cards.
 It was created with Express and uses the following depedencies:
 
@@ -12,10 +12,14 @@ mongodb, mongoose for the database
 multer for image uploading 
 prettier for code formating
 
+once the image is uploaded, the image can be accessed by using the file path provided in the productImage field. 
+
+An example would be http://localhost:3000/uploads//1632075198556fearow._AC_.jpg
+
 the images labeled example1 and example2 show the routes in action.
 
 Users can register an account and login to begin selling their pokemon cards, where they must provide an image of the card, its name, and a price.
-To start the program, run the command npm start
+To start the program, run the command npm install then npm start
 The routes are as follows:
 
 /api/user/register
@@ -62,3 +66,7 @@ the user wants to delete their pokemon card or it is sold successfuly.
 
 Patch route that modifies a pokemon card. Requires its specific object id to edit . Also only the user who created the pokemon card can edit it.
 
+Here are some images of the routes in action:
+
+![Creating a pokemon card](pictures/example1.png)
+![Getting a pokemon card using the object id](pictures/example2.png)
